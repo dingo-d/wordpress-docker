@@ -58,5 +58,9 @@ http {
       expires max;
       log_not_found off;
     }
+
+    location ~* /uploads/.*\.php {
+      deny all;
+    }
   }
 }
