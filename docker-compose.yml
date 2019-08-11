@@ -1,0 +1,79 @@
+version: '3.7'
+
+services:
+
+  nginx:
+    image: nginx:latest
+    container_name: docker-nginx
+    working_dir: /var/www/html
+    restart: always
+    volumes:
+      - ./config/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./config/certs/${APP_HOST}.crt:/etc/nginx/${APP_HOST}.crt
+      - ./config/certs/${APP_HOST}.key:/etc/nginx/${APP_HOST}.key
+      - .:/var/www/html
+    depends_on:
+      - wordpress
+    ports:
+      - "${NGINX_HOST_HTTP_PORT}:80"
+      - "${NGINX_HOST_HTTPS_PORT}:443"
+
+  wordpress:
+    image: wordpress:php7.3-fpm
+    container_name: docker-wp
+    working_dir: /var/www/html
+    tty: true
+    restart: always
+    depends_on:
+      - database
+    volumes:
+      - .:/var/www/html
+      - ./config/php/php.ini:/usr/local/etc/php/conf.d/local.ini
+    environment:
+      DB_PORT: ${DB_PORT}
+      DB_HOST: ${DB_HOST}
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      AUTH_KEY: ${AUTH_KEY}
+      SECURE_AUTH_KEY: ${SECURE_AUTH_KEY}
+      LOGGED_IN_KEY: ${LOGGED_IN_KEY}
+      NONCE_KEY: ${NONCE_KEY}
+      AUTH_SALT: ${AUTH_SALT}
+      SECURE_AUTH_SALT: ${SECURE_AUTH_SALT}
+      LOGGED_IN_SALT: ${LOGGED_IN_SALT}
+      NONCE_SALT: ${NONCE_SALT}
+      DB_PREFIX: ${DB_PREFIX}
+    ports:
+      - '9000:9000'
+
+  database:
+    image: mariadb:10.3
+    volumes:
+      - data_db:/var/lib/mysql
+    restart: always
+    container_name: ${DB_HOST}
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: 1
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "${DB_HOST_PORT}:${DB_PORT}"
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: docker-phpmyadmin
+    external_links:
+      - database
+    depends_on:
+      - database
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: 1
+      MYSQL_USERNAME: root
+      PMA_HOST: ${DB_HOST}
+    ports:
+      - "${PHPMYADMIN_HOST_PORT}:80"
+
+volumes:
+  data_db:

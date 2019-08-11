@@ -1,0 +1,62 @@
+worker_processes auto;
+
+events {
+  worker_connections  2048;
+}
+
+http {
+
+  include mime.types;
+
+  index index.php index.html index.htm;
+
+  server {
+    listen 80;
+    listen [::]:80;
+
+    server_name APP_HOST;
+
+    return 301 https://$server_name$request_uri;
+  }
+
+  server {
+
+    listen 443 ssl;
+    listen [::]:443 ssl;
+
+    server_name APP_HOST;
+
+    ssl_certificate /etc/nginx/APP_HOST.crt;
+    ssl_certificate_key /etc/nginx/APP_HOST.key;
+
+    root /var/www/html;
+
+    client_max_body_size 128M;
+
+    location = /favicon.ico {
+      log_not_found off;
+      access_log off;
+    }
+
+    location / {
+      try_files $uri /index.php?$args;
+    }
+
+    location ~ \.php$ {
+      try_files $uri =404;
+      fastcgi_split_path_info ^(.+\.php)(/.+)$;
+      fastcgi_pass wordpress:9000;
+      fastcgi_index index.php;
+      include fastcgi_params;
+      fastcgi_intercept_errors on;
+      fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+      fastcgi_param PATH_INFO $fastcgi_path_info;
+      fastcgi_param QUERY_STRING $query_string;
+    }
+
+    location ~* \.(js|css|png|jpg|jpeg|gif|ico)$ {
+      expires max;
+      log_not_found off;
+    }
+  }
+}
