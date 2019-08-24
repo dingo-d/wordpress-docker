@@ -21,8 +21,7 @@ RUN apt-get update && apt-get install -y \
       zip \
       pdo \
       pdo_mysql \
-      mysqli \
-    && docker-php-ext-install -j$(nproc) iconv \
+      iconv \
     && export CFLAGS="$PHP_CFLAGS" CPPFLAGS="$PHP_CPPFLAGS" LDFLAGS="$PHP_LDFLAGS" \
     && rm -rf /var/lib/apt/lists/* \
     && pecl install imagick-3.4.4 \
