@@ -11,7 +11,7 @@ services:
       - ./config/nginx/nginx.conf:/etc/nginx/nginx.conf
       - ./config/certs/${APP_HOST}.crt:/etc/nginx/${APP_HOST}.crt
       - ./config/certs/${APP_HOST}.key:/etc/nginx/${APP_HOST}.key
-      - .:/var/www/html
+      - ./:/var/www/html
     depends_on:
       - wordpress
     ports:
@@ -19,7 +19,9 @@ services:
       - "${NGINX_HOST_HTTPS_PORT}:443"
 
   wordpress:
-    image: wordpress:php7.3-fpm
+    build:
+      context: .
+      dockerfile: config/php/Dockerfile
     container_name: docker-wp
     working_dir: /var/www/html
     tty: true
@@ -27,7 +29,7 @@ services:
     depends_on:
       - database
     volumes:
-      - .:/var/www/html
+      - ./:/var/www/html
       - ./config/php/php.ini:/usr/local/etc/php/conf.d/local.ini
     environment:
       DB_PORT: ${DB_PORT}

@@ -29,7 +29,7 @@ http {
     ssl_certificate /etc/nginx/APP_HOST.crt;
     ssl_certificate_key /etc/nginx/APP_HOST.key;
 
-    root /var/www/html;
+    root /var/www/html/;
 
     client_max_body_size 128M;
 
@@ -39,7 +39,7 @@ http {
     }
 
     location / {
-      try_files $uri /index.php?$args;
+      try_files $uri /index.php;
     }
 
     location ~ \.php$ {
