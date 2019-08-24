@@ -11,7 +11,6 @@ RUN apt-get update && apt-get install -y \
       unzip \
       mariadb-client \
       libmagickwand-dev \
-      php-pcov \
     && docker-php-ext-configure gd --with-png-dir=/usr/include/ --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
     && docker-php-ext-install -j$(nproc) \
       bcmath \
@@ -27,6 +26,7 @@ RUN apt-get update && apt-get install -y \
     && export CFLAGS="$PHP_CFLAGS" CPPFLAGS="$PHP_CPPFLAGS" LDFLAGS="$PHP_LDFLAGS" \
     && rm -rf /var/lib/apt/lists/* \
     && pecl install imagick-3.4.4 \
+    && pecl install pcov \
     && docker-php-ext-enable imagick
 
 # Composer
