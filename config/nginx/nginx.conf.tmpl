@@ -1,7 +1,7 @@
 worker_processes auto;
 
 events {
-  worker_connections  2048;
+  worker_connections 2048;
 }
 
 http {
@@ -29,7 +29,7 @@ http {
     ssl_certificate /etc/nginx/APP_HOST.crt;
     ssl_certificate_key /etc/nginx/APP_HOST.key;
 
-    root /var/www/html/;
+    root /var/www/html;
 
     client_max_body_size 128M;
 
