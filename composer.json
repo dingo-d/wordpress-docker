@@ -1,0 +1,23 @@
+{
+	"name": "dingo-d/wordpress-docker",
+	"description": "A blueprint Docker config used for WordPress development on Docker with SSL on latest PHP version",
+	"type": "docker-template",
+	"keywords": ["docker", "WordPress", "development", "blueprint", "template"],
+	"homepage": "https://github.com/dingo-d/wordpress-docker",
+	"license": "MIT",
+	"authors": [{
+		"name": "Denis Žoljom",
+		"homepage": "https://github.com/dingo-d",
+		"role": "Lead developer"
+	}, {
+		"name": "Contributors",
+		"homepage": "https://github.com/dingo-d/wordpress-docker/graphs/contributors"
+	}],
+	"require": {
+		"php": ">=7.0"
+	},
+	"support": {
+		"issues": "https://github.com/dingo-d/wordpress-docker/issues",
+		"source": "https://github.com/dingo-d/wordpress-docker"
+	}
+}
