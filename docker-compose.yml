@@ -19,9 +19,7 @@ services:
       - "${NGINX_HOST_HTTPS_PORT}:443"
 
   wordpress:
-    build:
-      context: .
-      dockerfile: config/php/Dockerfile
+    image: wordpress:php7.3-fpm
     container_name: docker-wp
     working_dir: /var/www/html
     tty: true
