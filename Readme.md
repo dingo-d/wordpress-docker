@@ -103,6 +103,10 @@ This will create the containers for the app. To run them (in a detached state) y
 make docker-up
 ```
 
+### Production settings
+
+Some settings like `nginx.conf` and `php.ini` (especially the opcache settings) need to be modified for production. You should coordinate with your devops when working on production environment.
+
 ## :bullseye: Additional services
 
 You can add additional services in your `docker-compose.yml` if you want to. The `.env.example` contains the environment variables for `redis` and `mailhog` services. To use them, add them to your `docker-compose.yml` file under `services` like
